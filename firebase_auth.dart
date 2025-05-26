@@ -9,7 +9,7 @@ class FirebaseAuthService {
       password: password,
     );
 
-    // Optionally, save the name to the user profile or database
+    // Optionally, save the name to the user profile
     await userCredential.user!.updateProfile(displayName: name);
   }
 
