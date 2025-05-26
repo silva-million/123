@@ -81,3 +81,30 @@ class AuthWrapper extends StatelessWidget {
   }
 }
 
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_auth_service.dart'; // Assume you have this service for Firebase Auth
+import 'auth_screen.dart';
+import 'home_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Firebase Auth Demo',
+      initialRoute: '/auth',
+      routes: {
+        '/auth': (context) => AuthScreen(),
+        '/home': (context) => HomeScreen(),
+      },
+    );
+  }
+}
+
