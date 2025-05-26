@@ -64,6 +64,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final nameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   bool isLogin = true;
@@ -79,7 +80,11 @@ class _AuthScreenState extends State<AuthScreen> {
       if (isLogin) {
         await FirebaseAuthService.login(emailCtrl.text, passCtrl.text);
       } else {
-        await FirebaseAuthService.signUp(emailCtrl.text, passCtrl.text);
+        await FirebaseAuthService.signUp(
+          nameCtrl.text,
+          emailCtrl.text,
+          passCtrl.text,
+        );
       }
       // Navigate to HomeScreen after successful login/signup
       Navigator.pushReplacementNamed(context, '/home');
@@ -96,6 +101,8 @@ class _AuthScreenState extends State<AuthScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            if (!isLogin)
+              TextField(controller: nameCtrl, decoration: InputDecoration(labelText: 'Name')),
             TextField(controller: emailCtrl, decoration: InputDecoration(labelText: 'Email')),
             TextField(controller: passCtrl, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
             SizedBox(height: 20),
