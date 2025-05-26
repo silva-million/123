@@ -99,12 +99,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Firebase Auth Demo',
-      initialRoute: '/auth',
-      routes: {
-        '/auth': (context) => AuthScreen(),
-        '/home': (context) => HomeScreen(),
-      },
+      home: AuthWrapper(), // Use AuthWrapper for animation
     );
   }
 }
 
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuthService.currentUser;
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 600),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.95, end: 1.0).animate(animation),
+            child: child,
+          ),
+        );
+      },
+      child: user != null ? HomeScreen(key: ValueKey('Home')) : AuthScreen(key: ValueKey('Auth')),
+    );
+  }
+}
